@@ -68,18 +68,20 @@ const LooCard = ({ loo }) => {
             {loo.city || 'Unknown City'}
           </p>
         </div>
-        <div style={{
-          backgroundColor: '#f3f4f6',
-          padding: '0.5rem',
-          borderRadius: '0.5rem',
-          fontSize: '0.8rem',
-          fontWeight: '600',
-          color: '#374151'
-        }}>
-          {loo.tags && loo.tags.includes('Luxury') ? 'Luxury Hotel' : 
-           loo.tags && loo.tags.includes('Coffee Shop') ? 'Coffee Shop' :
-           loo.tags && loo.tags.includes('Public') ? 'Public Restroom' : 'Restroom'}
-        </div>
+        <Link
+          to={`/loo/${loo.id}`}
+          style={{
+            backgroundColor: '#1a1a1a',
+            color: 'white',
+            padding: '0.5rem 1rem',
+            borderRadius: '0.375rem',
+            textDecoration: 'none',
+            fontSize: '0.9rem',
+            fontWeight: '600'
+          }}
+        >
+          View Details
+        </Link>
       </div>
 
       {/* Rating */}
@@ -168,20 +170,18 @@ const LooCard = ({ loo }) => {
           <span>🕒</span>
           <span>{formatDate(loo.created_at)}</span>
         </div>
-        <Link
-          to={`/loo/${loo.id}`}
-          style={{
-            backgroundColor: '#1a1a1a',
-            color: 'white',
-            padding: '0.5rem 1rem',
-            borderRadius: '0.375rem',
-            textDecoration: 'none',
-            fontSize: '0.9rem',
-            fontWeight: '600'
-          }}
-        >
-          View Details
-        </Link>
+        <div style={{
+          backgroundColor: '#f3f4f6',
+          padding: '0.5rem',
+          borderRadius: '0.5rem',
+          fontSize: '0.8rem',
+          fontWeight: '600',
+          color: '#374151'
+        }}>
+          {loo.tags && loo.tags.includes('Luxury') ? 'Luxury Hotel' : 
+           loo.tags && loo.tags.includes('Coffee Shop') ? 'Coffee Shop' :
+           loo.tags && loo.tags.includes('Public') ? 'Public Restroom' : 'Restroom'}
+        </div>
       </div>
     </div>
   );
