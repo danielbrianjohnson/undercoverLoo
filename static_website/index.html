@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undercover Loo - The World's Best Bathroom Secrets Revealed</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="logos/logo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="logos/logo.png">
+    <link rel="apple-touch-icon" href="logos/logo.png">
+    <link rel="shortcut icon" href="logos/logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #fafafa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #333;
+            text-decoration: none;
+            gap: 0.75rem;
+        }
+
+        .logo-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            object-fit: cover;
+            background: white;
+            padding: 1px;
+        }
+
+        .logo::before {
+            display: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #666;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #333;
+        }
+
+        .join-waitlist {
+            background: #333;
+            color: white !important;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: background 0.3s;
+        }
+
+        .join-waitlist:hover {
+            background: #555 !important;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: white;
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .hero-logo {
+            max-width: 150px;
+            height: 150px;
+            margin-bottom: 2rem;
+            border-radius: 50%;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            object-fit: cover;
+            background: white;
+            padding: 3px;
+        }
+
+        .coming-soon-badge {
+            display: inline-block;
+            background: #f0f0f0;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+            color: #666;
+        }
+
+        .coming-soon-badge::before {
+            content: "🚀";
+            margin-right: 8px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: #666;
+            margin-bottom: 1rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-tagline {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 3rem;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .stat-icon {
+            font-size: 1.2rem;
+        }
+
+        .stat-number {
+            font-weight: 700;
+            color: #333;
+        }
+
+        .stat-label {
+            color: #666;
+        }
+
+        /* Email Signup */
+        .email-signup {
+            display: flex;
+            max-width: 600px;
+            margin: 0 auto 1rem;
+            gap: 0.5rem;
+        }
+
+        .email-input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+            min-width: 300px;
+            background: white;
+        }
+
+        .email-input:focus {
+            border-color: #333;
+            box-shadow: 0 0 0 3px rgba(51, 51, 51, 0.1);
+        }
+
+        .email-input::placeholder {
+            color: #999;
+            font-size: 1rem;
+        }
+
+        .submit-btn {
+            background: #333;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+        }
+
+        .submit-btn:hover {
+            background: #555;
+        }
+
+        .disclaimer {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 4rem;
+        }
+
+        /* Demo Section */
+        .demo-section {
+            background: #f5f5f5;
+            padding: 3rem;
+            border-radius: 12px;
+            margin: 4rem 0;
+            text-align: center;
+        }
+
+        .demo-icons {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .demo-section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .demo-section p {
+            color: #666;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 4rem 0;
+            background: white;
+        }
+
+        .features h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .features-subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .feature-card {
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid #e0e0e0;
+            background: white;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .feature-icon {
+            background: #f5f5f5;
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .feature-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-meta {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .feature-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* How It Works */
+        .how-it-works {
+            padding: 4rem 0;
+            background: #fafafa;
+        }
+
+        .how-it-works h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .how-it-works-subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            position: relative;
+        }
+
+        .step {
+            text-align: center;
+            position: relative;
+        }
+
+        .step-icon {
+            background: white;
+            width: 80px;
+            height: 80px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .step-number {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: #333;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .step h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .step p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            padding: 4rem 0;
+            background: white;
+        }
+
+        .testimonials h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .testimonials-subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .testimonial {
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid #e0e0e0;
+            background: white;
+        }
+
+        .stars {
+            color: #ffc107;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .author-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e0e0e0;
+        }
+
+        .author-info h4 {
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .author-info p {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        /* Final CTA */
+        .final-cta {
+            padding: 4rem 0;
+            background: #fafafa;
+            text-align: center;
+        }
+
+        .cta-benefits {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .benefit {
+            text-align: center;
+        }
+
+        .benefit-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .benefit h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .benefit p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .waitlist-count {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 1rem;
+        }
+
+        /* Footer */
+        footer {
+            background: white;
+            padding: 3rem 0 2rem;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-brand p {
+            color: #666;
+            margin: 1rem 0;
+            line-height: 1.6;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+
+        .social-links a:hover {
+            background: #e0e0e0;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section ul li a {
+            color: #666;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section ul li a:hover {
+            color: #333;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #e0e0e0;
+            padding-top: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .stats {
+                gap: 1.5rem;
+            }
+
+            .email-signup {
+                flex-direction: column;
+            }
+
+            .steps {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .cta-benefits {
+                flex-direction: column;
+                gap: 2rem;
+            }
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 1rem;
+            border-radius: 6px;
+            margin-top: 1rem;
+            display: none;
+        }
+        
+        .social-links {
+    display: flex;
+    gap: 1rem;
+}
+
+    .social-links a {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        background: #f5f5f5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        color: #666;
+    }
+
+    .social-links a:hover {
+        background: #333;
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    .social-links a i {
+        font-size: 16px;
+    }
+
+    /* Specific hover colors for each platform */
+    .social-links a[href*="twitter"]:hover {
+        background: #1da1f2;
+    }
+
+    .social-links a[href*="instagram"]:hover {
+        background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    }
+
+    .social-links a[href*="tiktok"]:hover {
+        background: #000000;
+    }
+
+    .social-links a[href*="mailto"]:hover {
+        background: #333;
+    }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <a href="#" class="logo">
+                <img src="logos/logo.png" alt="Undercover Loo" class="logo-img">
+                Undercover Loo
+            </a>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#how-it-works">How It Works</a></li>
+                <!--<li><a href="#stories">Stories</a></li>-->
+                <!--<li><a href="#" class="join-waitlist">Join Waitlist</a></li>-->
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <img src="logos/logo.png" alt="Undercover Loo Logo" class="hero-logo">
+                
+                <h1>The World's Best Bathroom Secrets Revealed</h1>
+                
+                <p class="hero-subtitle">Access luxury hotel bathrooms, hidden public loos, and insider tips from travelers worldwide.</p>
+                
+                <p class="hero-tagline">Your secret weapon for clean bathrooms anywhere.</p>
+                
+                <!--
+                <div class="stats">
+                    <div class="stat">
+                        <span class="stat-icon">👥</span>
+                        <span class="stat-number">2,847</span>
+                        <span class="stat-label">Early Adopters</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-icon">📍</span>
+                        <span class="stat-number">127</span>
+                        <span class="stat-label">Cities Ready</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-icon">⭐</span>
+                        <span class="stat-number">4.9</span>
+                        <span class="stat-label">Beta Rating</span>
+                    </div>
+                </div>
+                -->
+                
+               <form class="email-signup" id="emailForm" action="https://formspree.io/f/xyzjvona" method="POST">
+                    <input type="email" name="email" class="email-input" placeholder="Enter your email for early access" required>
+                    <input type="hidden" name="_subject" value="New Undercover Loo Waitlist Signup">
+                    <button type="submit" class="submit-btn">
+                        Join Mission
+                        <span>→</span>
+                    </button>
+                </form>
+                
+                <div class="success-message" id="successMessage">
+                    🎉 Welcome to the mission! Check your email for next steps.
+                </div>
+                
+                <p class="disclaimer">Free forever. No spam. Unsubscribe anytime.</p>
+                
+                <div class="demo-section">
+                    <div class="demo-icons">🕵️‍♂️🗺️🚽</div>
+                    <h2>App Demo Video Coming Soon</h2>
+                    <p>See how agents infiltrate luxury bathrooms worldwide</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="features" id="features">
+            <div class="container">
+                <h2>Your Secret Bathroom Arsenal</h2>
+                <p class="features-subtitle">Everything you need to find clean, private bathrooms anywhere in the world</p>
+                
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-header">
+                            <div class="feature-icon">📍</div>
+                            <div class="feature-meta">1000+ Spots</div>
+                        </div>
+                        <h3>Secret Locations</h3>
+                        <p>Discover hidden luxury bathrooms in hotels, malls, and exclusive venues worldwide</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-header">
+                            <div class="feature-icon">🛡️</div>
+                            <div class="feature-meta">Insider Secrets</div>
+                        </div>
+                        <h3>Infiltration Tips</h3>
+                        <p>Learn exactly how to dress, what to say, and how to walk in like you belong</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-header">
+                            <div class="feature-icon">👥</div>
+                            <div class="feature-meta">Community Verified</div>
+                        </div>
+                        <h3>Agent Network</h3>
+                        <p>Crowdsourced by thousands of travelers who've tested every location</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-header">
+                            <div class="feature-icon">⭐</div>
+                            <div class="feature-meta">5-Star System</div>
+                        </div>
+                        <h3>Quality Ratings</h3>
+                        <p>Cleanliness, privacy, luxury level, and accessibility ratings for every spot</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-header">
+                            <div class="feature-icon">📸</div>
+                            <div class="feature-meta">Visual Guides</div>
+                        </div>
+                        <h3>Photo Intel</h3>
+                        <p>See exactly what you're getting into with discreet photos and layout info</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-header">
+                            <div class="feature-icon">🧭</div>
+                            <div class="feature-meta">Offline Maps</div>
+                        </div>
+                        <h3>GPS Navigation</h3>
+                        <p>Find the nearest clean bathroom in seconds, even in foreign cities</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="how-it-works" id="how-it-works">
+            <div class="container">
+                <h2>How the Mission Works</h2>
+                <p class="how-it-works-subtitle">From desperate tourist to bathroom ninja in 4 simple steps</p>
+                
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-icon">
+                            📱
+                            <div class="step-number">01</div>
+                        </div>
+                        <h3>Open the App</h3>
+                        <p>Launch Undercover Loo and see nearby bathroom locations on the map</p>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-icon">
+                            🎯
+                            <div class="step-number">02</div>
+                        </div>
+                        <h3>Choose Your Target</h3>
+                        <p>Browse luxury hotels, clean cafes, or emergency public options with ratings</p>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-icon">
+                            🕵️‍♂️
+                            <div class="step-number">03</div>
+                        </div>
+                        <h3>Read the Intel</h3>
+                        <p>Get insider tips: what to wear, what to say, how to act like you belong</p>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-icon">
+                            ✅
+                            <div class="step-number">04</div>
+                        </div>
+                        <h3>Execute the Mission</h3>
+                        <p>Walk in confidently, use the facilities, and leave like a pro</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!--
+        <section class="testimonials" id="stories">
+            <div class="container">
+                <h2>Mission Success Stories</h2>
+                <p class="testimonials-subtitle">Real travelers sharing their undercover bathroom victories</p>
+                
+                <div class="testimonials-grid">
+                    <div class="testimonial">
+                        <div class="stars">⭐⭐⭐⭐⭐</div>
+                        <p class="testimonial-text">"Saved my life in Tokyo! Found a pristine bathroom in a luxury hotel - walked in wearing my blazer like I owned the place. The tips actually work!"</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar"></div>
+                            <div class="author-info">
+                                <h4>Sarah Chen</h4>
+                                <p>Digital Nomad • Tokyo, Japan</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="testimonial">
+                        <div class="stars">⭐⭐⭐⭐⭐</div>
+                        <p class="testimonial-text">"As a budget traveler, this is GOLD. No more sketchy gas station bathrooms. I've used 5-star hotel facilities in 12 countries now."</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar"></div>
+                            <div class="author-info">
+                                <h4>Mike Rodriguez</h4>
+                                <p>Backpacker • Barcelona, Spain</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="testimonial">
+                        <div class="stars">⭐⭐⭐⭐⭐</div>
+                        <p class="testimonial-text">"The Ritz Carlton tip in Paris was spot-on. Dressed business casual, walked straight to the lobby restroom. Felt like a secret agent!"</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar"></div>
+                            <div class="author-info">
+                                <h4>Emma Thompson</h4>
+                                <p>Business Traveler • Paris, France</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="testimonial">
+                        <div class="stars">⭐⭐⭐⭐⭐</div>
+                        <p class="testimonial-text">"Traveling with kids means bathroom emergencies. This app has saved us countless times. The family-friendly tags are incredibly helpful."</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar"></div>
+                            <div class="author-info">
+                                <h4>David Kim</h4>
+                                <p>Family Traveler • Seoul, South Korea</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="testimonial">
+                        <div class="stars">⭐⭐⭐⭐⭐</div>
+                        <p class="testimonial-text">"Safety and cleanliness are my top priorities. The community ratings and photos give me confidence before I even walk in."</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar"></div>
+                            <div class="author-info">
+                                <h4>Lisa Johnson</h4>
+                                <p>Solo Female Traveler • London, UK</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="testimonial">
+                        <div class="stars">⭐⭐⭐⭐⭐</div>
+                        <p class="testimonial-text">"From hostels to 5-star hotels, this app covers it all. The 'emergency' filter has been a lifesaver during long hiking days."</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar"></div>
+                            <div class="author-info">
+                                <h4>Carlos Santos</h4>
+                                <p>Adventure Traveler • Rio de Janeiro, Brazil</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        -->
+
+        <section class="final-cta">
+            <div class="container">
+                <h2>Join the World's Most Exclusive Bathroom Community</h2>
+                
+                <div class="cta-benefits">
+                    <div class="benefit">
+                        <div class="benefit-icon">⚡</div>
+                        <h3>Early Access</h3>
+                        <p>Be first to download when we launch</p>
+                    </div>
+                    <div class="benefit">
+                        <div class="benefit-icon">👑</div>
+                        <h3>Founder Status</h3>
+                        <p>Special badge and premium features free</p>
+                    </div>
+                    <div class="benefit">
+                        <div class="benefit-icon">🎁</div>
+                        <h3>Exclusive Content</h3>
+                        <p>Secret bathroom guides for major cities</p>
+                    </div>
+                </div>
+                
+                <form class="email-signup" id="emailForm2" action="https://formspree.io/f/xyzjvona" method="POST">
+                    <input type="email" name="email" class="email-input" placeholder="Enter your email to join" required>
+                    <input type="hidden" name="_subject" value="New Undercover Loo Waitlist Signup">
+                    <button type="submit" class="submit-btn">
+                        Join Now
+                        <span>→</span>
+                    </button>
+                </form>
+                
+                <p class="waitlist-count">Join 2,847+ travelers already on the waitlist. Free forever.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <a href="#" class="logo">Undercover Loo</a>
+                    <p>The world's first crowdsourced bathroom finder for travelers. Your secret weapon for clean loos anywhere.</p>
+                    <div class="social-links">
+                      <a href="https://twitter.com/undercover_loo" target="_blank" aria-label="Twitter">
+                        <i class="fab fa-twitter"></i>
+                      </a>
+                      <a href="https://instagram.com/undercover_loo" target="_blank" aria-label="Instagram">
+                        <i class="fab fa-instagram"></i>
+                      </a>
+                      <a href="https://tiktok.com/@undercover_loo" target="_blank" aria-label="TikTok">
+                        <i class="fab fa-tiktok"></i>
+                      </a>
+                      <a href="mailto:info@undercoverloo.com" aria-label="Email">
+                        <i class="fas fa-envelope"></i>
+                      </a>
+                    </div>
+
+                </div>
+                
+                <!--
+                <div class="footer-section">
+                    <h3>Product</h3>
+                    <ul>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#how-it-works">How It Works</a></li>
+                        <li><a href="#">Pricing</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Company</h3>
+                    <ul>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Privacy</a></li>
+                        <li><a href="#">Terms</a></li>
+                    </ul>
+                </div>
+                -->
+            </div>
+            
+            <div class="footer-bottom">
+                <p>© 2025 Undercover Loo. All rights reserved. Your #2 is our #1.</p>
+                <p>🌍 Made for travelers worldwide</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Email form handling
+        //function handleEmailSubmit(event) {
+        //    event.preventDefault();
+        //    const form = event.target;
+        //    const emailInput = form.querySelector('.email-input');
+        //    const email = emailInput.value;
+        //    
+        //    if (email) {
+        //        // Simulate form submission
+        //        setTimeout(() => {
+        //            form.style.display = 'none';
+        //                                    const successMessage = document.getElementById('successMessage');
+        //            if (successMessage) {
+        //                successMessage.style.display = 'block';
+        //            }
+        //            
+        //            // Store email in localStorage for demo purposes
+        //            localStorage.setItem('undercoverLooEmail', email);
+        //            
+        //            // Reset form after delay
+        //            setTimeout(() => {
+        //                form.style.display = 'flex';
+        //                successMessage.style.display = 'none';
+        //                emailInput.value = '';
+        //            }, 3000);
+        //        }, 500);
+        //    }
+        //}
+
+        // Add event listeners to both email forms
+        document.getElementById('emailForm').addEventListener('submit', handleEmailSubmit);
+        document.getElementById('emailForm2').addEventListener('submit', handleEmailSubmit);
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add some interactive animations on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe feature cards and testimonials for animation
+        document.querySelectorAll('.feature-card, .testimonial, .step').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+
+        // Counter animation for stats
+        function animateCounter(element, target) {
+            const duration = 2000;
+            const start = 0;
+            const startTime = performance.now();
+            
+            function update(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                const current = Math.floor(progress * target);
+                element.textContent = current.toLocaleString();
+                
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                }
+            }
+            
+            requestAnimationFrame(update);
+        }
+
+        // Animate stats when they come into view
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const numberElement = entry.target.querySelector('.stat-number');
+                    const target = parseInt(numberElement.textContent.replace(',', ''));
+                    animateCounter(numberElement, target);
+                    statsObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll('.stat').forEach(stat => {
+            statsObserver.observe(stat);
+        });
+
+        // Mobile menu toggle (basic implementation)
+        function createMobileMenu() {
+            const nav = document.querySelector('nav');
+            const navLinks = document.querySelector('.nav-links');
+            
+            // Create mobile menu button
+            const mobileMenuBtn = document.createElement('button');
+            mobileMenuBtn.innerHTML = '☰';
+            mobileMenuBtn.style.cssText = `
+                display: none;
+                background: none;
+                border: none;
+                font-size: 1.5rem;
+                cursor: pointer;
+                padding: 0.5rem;
+            `;
+            
+            // Add mobile menu styles
+            const mobileStyles = document.createElement('style');
+            mobileStyles.textContent = `
+                @media (max-width: 768px) {
+                    .mobile-menu-btn {
+                        display: block !important;
+                    }
+                    .nav-links.mobile-open {
+                        display: flex !important;
+                        position: absolute;
+                        top: 100%;
+                        left: 0;
+                        right: 0;
+                        background: white;
+                        flex-direction: column;
+                        padding: 1rem;
+                        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                        border-top: 1px solid #e0e0e0;
+                    }
+                }
+            `;
+            document.head.appendChild(mobileStyles);
+            
+            mobileMenuBtn.className = 'mobile-menu-btn';
+            mobileMenuBtn.addEventListener('click', () => {
+                navLinks.classList.toggle('mobile-open');
+            });
+            
+            nav.appendChild(mobileMenuBtn);
+        }
+
+        // Initialize mobile menu
+        createMobileMenu();
+
+        // Add some Easter eggs for fun
+        let clickCount = 0;
+        document.querySelector('.logo').addEventListener('click', (e) => {
+            e.preventDefault();
+            clickCount++;
+            if (clickCount === 5) {
+                alert('🕵️‍♂️ Secret agent mode activated! You now have VIP access to all the best bathroom intel. 🚽✨');
+                clickCount = 0;
+            }
+        });
+
+        // Konami code easter egg
+        let konamiCode = [];
+        const konamiSequence = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'KeyB', 'KeyA'];
+        
+        document.addEventListener('keydown', (e) => {
+            konamiCode.push(e.code);
+            if (konamiCode.length > konamiSequence.length) {
+                konamiCode.shift();
+            }
+            
+            if (konamiCode.join(',') === konamiSequence.join(',')) {
+                document.body.style.transform = 'rotate(360deg)';
+                document.body.style.transition = 'transform 1s ease';
+                setTimeout(() => {
+                    document.body.style.transform = '';
+                    alert('🎮 Cheat code activated! All bathroom locations unlocked! 🗺️');
+                }, 1000);
+                konamiCode = [];
+            }
+        });
+    </script>
+</body>
+</html>
