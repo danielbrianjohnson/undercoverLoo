@@ -25,46 +25,50 @@ const Header = () => {
       <Link 
         to="/" 
         style={{
-          fontSize: '1.5rem',
+          fontSize: '1.25rem',
           fontWeight: 'bold',
           textDecoration: 'none',
-          color: 'white'
+          color: 'white',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.5rem'
         }}
       >
         🚽 Undercover Loo
       </Link>
 
       {/* Navigation */}
-      <nav style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
-        <Link 
-          to="/" 
-          style={{
-            textDecoration: 'none',
-            color: isActive('/') ? '#60a5fa' : 'white',
-            fontWeight: isActive('/') ? 'bold' : 'normal'
-          }}
-        >
-          Map
-        </Link>
-        <Link 
-          to="/list" 
-          style={{
-            textDecoration: 'none',
-            color: isActive('/list') ? '#60a5fa' : 'white',
-            fontWeight: isActive('/list') ? 'bold' : 'normal'
-          }}
-        >
-          List
-        </Link>
+      <nav style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <Link 
+            to="/" 
+            style={{
+              backgroundColor: 'white',
+              color: '#1a1a1a',
+              padding: '0.5rem 1rem',
+              borderRadius: '0.375rem',
+              textDecoration: 'none',
+              fontSize: '0.9rem',
+              fontWeight: '600',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem'
+            }}
+          >
+            🏠 Home
+          </Link>
         <Link 
           to="/add" 
           style={{
-            backgroundColor: '#3b82f6',
-            color: 'white',
+            backgroundColor: 'white',
+            color: '#1a1a1a',
             padding: '0.5rem 1rem',
             borderRadius: '0.5rem',
             textDecoration: 'none',
-            fontWeight: 'bold'
+            fontWeight: '500',
+            fontSize: '0.9rem',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem'
           }}
         >
           + Add Spot

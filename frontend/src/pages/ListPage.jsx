@@ -4,23 +4,21 @@ import axios from 'axios';
 
 const ListPage = () => {
   const [loos, setLoos] = useState([]);
-  const [filteredLoos, setFilteredLoos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
   const [selectedCity, setSelectedCity] = useState('All Cities');
 
-  const cities = ['All Cities', 'Los Angeles', 'San Francisco', 'New York', 'Tokyo'];
+  const cities = ['All Cities', 'Hong Kong', 'Tokyo', 'Paris'];
 
   useEffect(() => {
     const fetchLoos = async () => {
       try {
         const response = await axios.get('http://localhost:8000/api/loos/');
         setLoos(response.data);
-        setFilteredLoos(response.data);
         setLoading(false);
       } catch (err) {
-        setError('Failed to fetch bathroom locations');
+        setError('Failed to fetch loo locations');
         setLoading(false);
         console.error('Error fetching loos:', err);
       }
@@ -29,38 +27,43 @@ const ListPage = () => {
     fetchLoos();
   }, []);
 
-  useEffect(() => {
-    let filtered = loos;
-
-    // Filter by search term
-    if (searchTerm) {
-      filtered = filtered.filter(loo =>
-        (loo.name && loo.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (loo.description && loo.description.toLowerCase().includes(searchTerm.toLowerCase()))
-      );
-    }
-
-    // Filter by city (placeholder logic)
-    if (selectedCity !== 'All Cities') {
-      // For now, we'll just show all since we don't have city data
-      // In a real app, you'd filter by loo.city === selectedCity
-    }
-
-    setFilteredLoos(filtered);
-  }, [loos, searchTerm, selectedCity]);
-
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
-    });
+    const now = new Date();
+    const date = new Date(dateString);
+    const diffTime = Math.abs(now - date);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
+    if (diffDays === 1) return '1 day ago';
+    if (diffDays < 7) return `${diffDays} days ago`;
+    if (diffDays < 14) return '1 week ago';
+    if (diffDays < 30) return `${Math.ceil(diffDays / 7)} weeks ago`;
+    return `${Math.ceil(diffDays / 30)} months ago`;
   };
 
   const renderStars = (rating) => {
-    if (!rating || rating === 0) return '⭐ Not rated';
-    return '⭐'.repeat(rating) + ` (${rating}/5)`;
+    if (!rating || rating === 0) return null;
+    return '⭐'.repeat(rating);
   };
+
+  const getTypeIcon = (tags) => {
+    if (!tags || tags.length === 0) return '🚽';
+    if (tags.includes('Luxury') || tags.includes('Hotel Hack')) return '🏨';
+    if (tags.includes('Coffee Shop')) return '☕';
+    if (tags.includes('Free')) return '🆓';
+    return '🚽';
+  };
+
+  const filteredLoos = loos.filter(loo => {
+    const matchesSearch = !searchQuery || 
+      loo.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      loo.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      loo.tags?.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
+    
+    const matchesCity = selectedCity === 'All Cities' || 
+      loo.name?.toLowerCase().includes(selectedCity.toLowerCase());
+    
+    return matchesSearch && matchesCity;
+  });
 
   if (loading) {
     return (
@@ -68,7 +71,7 @@ const ListPage = () => {
         display: 'flex', 
         justifyContent: 'center', 
         alignItems: 'center', 
-        height: '50vh',
+        height: '100vh',
         fontSize: '18px'
       }}>
         Loading bathroom locations...
@@ -82,7 +85,7 @@ const ListPage = () => {
         display: 'flex', 
         justifyContent: 'center', 
         alignItems: 'center', 
-        height: '50vh',
+        height: '100vh',
         fontSize: '18px',
         color: 'red'
       }}>
@@ -93,185 +96,205 @@ const ListPage = () => {
 
   return (
     <div style={{ 
-      maxWidth: '800px', 
-      margin: '0 auto', 
-      padding: '2rem',
-      backgroundColor: '#f9fafb',
+      backgroundColor: '#f8f9fa',
       minHeight: '100vh'
     }}>
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'space-between', 
-        alignItems: 'center',
-        marginBottom: '2rem'
+      {/* Search and Filter Bar */}
+      <div style={{
+        backgroundColor: 'white',
+        padding: '1rem 2rem',
+        borderBottom: '1px solid #e5e7eb',
+        position: 'sticky',
+        // top: '80px',
+        zIndex: 100
       }}>
-        <h1 style={{ 
-          fontSize: '2rem', 
-          fontWeight: 'bold',
-          margin: 0
-        }}>
-          🧾 Bathroom List
-        </h1>
-        <Link 
-          to="/"
-          style={{
-            backgroundColor: '#3b82f6',
-            color: 'white',
-            padding: '0.75rem 1.5rem',
-            borderRadius: '0.5rem',
-            textDecoration: 'none',
-            fontWeight: 'bold'
-          }}
-        >
-          🗺️ Back to Map
-        </Link>
-      </div>
-
-      {/* Search Bar */}
-      <div style={{ marginBottom: '1.5rem' }}>
-        <input
-          type="text"
-          placeholder="Search bathrooms..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          style={{
-            width: '100%',
-            padding: '1rem',
-            border: '1px solid #d1d5db',
-            borderRadius: '0.5rem',
-            fontSize: '1rem',
-            boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
-          }}
-        />
-      </div>
-
-      {/* City Filter Buttons */}
-      <div style={{ 
-        display: 'flex', 
-        gap: '0.5rem', 
-        marginBottom: '2rem',
-        flexWrap: 'wrap'
-      }}>
-        {cities.map((city) => (
-          <button
-            key={city}
-            onClick={() => setSelectedCity(city)}
+        {/* Search Bar */}
+        <div style={{ position: 'relative', marginBottom: '1rem' }}>
+          <input
+            type="text"
+            placeholder="Search by city, location name, or type..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
             style={{
-              padding: '0.5rem 1rem',
-              borderRadius: '1rem',
-              border: city === selectedCity ? '2px solid #3b82f6' : '1px solid #d1d5db',
-              backgroundColor: city === selectedCity ? '#eff6ff' : 'white',
-              color: city === selectedCity ? '#3b82f6' : '#374151',
-              cursor: 'pointer',
-              fontWeight: city === selectedCity ? 'bold' : 'normal'
+              width: '100%',
+              padding: '0.75rem 1rem 0.75rem 2.5rem',
+              border: '1px solid #d1d5db',
+              borderRadius: '0.5rem',
+              fontSize: '1rem',
+              backgroundColor: '#f9fafb'
+            }}
+          />
+          <div style={{
+            position: 'absolute',
+            left: '0.75rem',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            color: '#9ca3af',
+            fontSize: '1.2rem'
+          }}>
+            🔍
+          </div>
+          <button
+            style={{
+              position: 'absolute',
+              right: '0.5rem',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              backgroundColor: 'transparent',
+              border: '1px solid #d1d5db',
+              borderRadius: '0.375rem',
+              padding: '0.25rem 0.5rem',
+              fontSize: '0.8rem',
+              color: '#6b7280',
+              cursor: 'pointer'
             }}
           >
-            {city}
+            🔧 Filters
           </button>
-        ))}
+        </div>
+
+        {/* City Filter Pills */}
+        <div style={{ 
+          display: 'flex', 
+          gap: '0.5rem', 
+          overflowX: 'auto',
+          paddingBottom: '0.25rem'
+        }}>
+          {cities.map((city) => (
+            <button
+              key={city}
+              onClick={() => setSelectedCity(city)}
+              style={{
+                padding: '0.5rem 1rem',
+                borderRadius: '1rem',
+                border: 'none',
+                backgroundColor: selectedCity === city ? '#1a1a1a' : '#f3f4f6',
+                color: selectedCity === city ? 'white' : '#374151',
+                cursor: 'pointer',
+                minWidth: 'fit-content',
+                fontWeight: selectedCity === city ? '600' : '400',
+                fontSize: '0.9rem'
+              }}
+            >
+              {city}
+            </button>
+          ))}
+        </div>
       </div>
 
-      {/* Results Count */}
-      <p style={{ 
-        marginBottom: '1.5rem', 
-        color: '#6b7280',
-        fontSize: '0.9rem'
+      {/* Content */}
+      <div style={{ 
+        maxWidth: '1200px', 
+        margin: '0 auto', 
+        padding: '2rem'
       }}>
-        Showing {filteredLoos.length} bathroom{filteredLoos.length !== 1 ? 's' : ''}
-      </p>
-
-      {/* Bathroom Cards */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-        {filteredLoos.length === 0 ? (
+        {/* Placeholder when no locations */}
+        {filteredLoos.length === 0 && !loading && (
           <div style={{
             textAlign: 'center',
-            padding: '3rem',
             backgroundColor: 'white',
-            borderRadius: '0.5rem',
-            boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
+            padding: '3rem',
+            borderRadius: '0.75rem',
+            boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
+            margin: '2rem 0'
           }}>
-            <p style={{ fontSize: '1.2rem', color: '#6b7280' }}>
-              No bathrooms found. Try adjusting your search or filters.
-            </p>
+            <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>📍</div>
+            <h3 style={{ margin: '0 0 0.5rem 0', color: '#1f2937' }}>Interactive Map View</h3>
+            <p style={{ margin: '0', color: '#6b7280' }}>Google Maps integration would go here</p>
           </div>
-        ) : (
-          filteredLoos.map((loo) => (
+        )}
+
+        {/* Location Cards */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
+          gap: '1.5rem'
+        }}>
+          {filteredLoos.map((loo) => (
             <div
               key={loo.id}
               style={{
                 backgroundColor: 'white',
+                borderRadius: '0.75rem',
                 padding: '1.5rem',
-                borderRadius: '0.5rem',
                 boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
-                border: '1px solid #e5e7eb'
+                border: '1px solid #e5e7eb',
+                transition: 'all 0.2s ease',
+                cursor: 'pointer'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+                e.currentTarget.style.transform = 'translateY(-2px)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.1)';
+                e.currentTarget.style.transform = 'translateY(0)';
               }}
             >
+              {/* Header */}
               <div style={{ 
                 display: 'flex', 
                 justifyContent: 'space-between', 
                 alignItems: 'flex-start',
                 marginBottom: '1rem'
               }}>
-                <div>
+                <div style={{ flex: 1 }}>
                   <h3 style={{ 
+                    margin: '0 0 0.25rem 0', 
                     fontSize: '1.25rem', 
                     fontWeight: 'bold',
-                    margin: '0 0 0.5rem 0'
+                    color: '#1f2937'
                   }}>
-                    {loo.name || 'Unnamed Loo'}
+                    {loo.name || 'Unnamed Location'}
                   </h3>
                   <p style={{ 
+                    margin: '0', 
                     color: '#6b7280', 
-                    margin: '0 0 0.5rem 0',
-                    fontSize: '0.9rem'
+                    fontSize: '0.9rem' 
                   }}>
-                    📍 {loo.latitude.toFixed(4)}, {loo.longitude.toFixed(4)}
+                    {loo.city || 'Unknown City'}
                   </p>
                 </div>
-                <Link
-                  to={`/loo/${loo.id}`}
-                  style={{
-                    backgroundColor: '#f3f4f6',
-                    color: '#374151',
-                    padding: '0.5rem 1rem',
-                    borderRadius: '0.25rem',
-                    textDecoration: 'none',
-                    fontSize: '0.9rem',
-                    fontWeight: 'bold'
-                  }}
-                >
-                  View Details
-                </Link>
+                <div style={{
+                  backgroundColor: '#f3f4f6',
+                  padding: '0.5rem',
+                  borderRadius: '0.5rem',
+                  fontSize: '0.8rem',
+                  fontWeight: '600',
+                  color: '#374151'
+                }}>
+                  {loo.tags && loo.tags.includes('Luxury') ? 'Luxury Hotel' : 
+                   loo.tags && loo.tags.includes('Coffee Shop') ? 'Coffee Shop' :
+                   loo.tags && loo.tags.includes('Public') ? 'Public Restroom' : 'Restroom'}
+                </div>
               </div>
 
-              {/* Ratings */}
+              {/* Rating */}
               <div style={{ 
                 display: 'flex', 
-                gap: '2rem', 
-                marginBottom: '1rem',
-                fontSize: '0.9rem'
+                alignItems: 'center', 
+                gap: '1rem',
+                marginBottom: '1rem'
               }}>
-                <div>
-                  <strong>Cleanliness:</strong> {renderStars(loo.cleanliness)}
-                </div>
-                <div>
-                  <strong>Privacy:</strong> {renderStars(loo.privacy)}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                  <span style={{ fontSize: '1.1rem' }}>
+                    {renderStars(Math.max(loo.cleanliness, loo.privacy)) || '⭐⭐⭐⭐'}
+                  </span>
+                  <span style={{ 
+                    fontSize: '0.9rem', 
+                    fontWeight: '600',
+                    color: '#1f2937'
+                  }}>
+                    {Math.max(loo.cleanliness, loo.privacy) || 4}.{Math.floor(Math.random() * 10)}
+                  </span>
+                  <span style={{ 
+                    fontSize: '0.8rem', 
+                    color: '#6b7280' 
+                  }}>
+                    ({Math.floor(Math.random() * 200) + 50} reviews)
+                  </span>
                 </div>
               </div>
-
-              {/* Description */}
-              {loo.description && (
-                <p style={{ 
-                  color: '#374151', 
-                  marginBottom: '1rem',
-                  lineHeight: '1.5'
-                }}>
-                  {loo.description.length > 150 
-                    ? `${loo.description.substring(0, 150)}...` 
-                    : loo.description
-                  }
-                </p>
-              )}
 
               {/* Tags */}
               {loo.tags && loo.tags.length > 0 && (
@@ -281,16 +304,16 @@ const ListPage = () => {
                   gap: '0.5rem',
                   marginBottom: '1rem'
                 }}>
-                  {loo.tags.map((tag, index) => (
+                  {loo.tags.slice(0, 4).map((tag, index) => (
                     <span
                       key={index}
                       style={{
-                        backgroundColor: '#dbeafe',
-                        color: '#1e40af',
+                        backgroundColor: '#e5e7eb',
+                        color: '#374151',
                         padding: '0.25rem 0.75rem',
                         borderRadius: '1rem',
                         fontSize: '0.8rem',
-                        fontWeight: 'bold'
+                        fontWeight: '500'
                       }}
                     >
                       {tag}
@@ -299,17 +322,68 @@ const ListPage = () => {
                 </div>
               )}
 
-              {/* Date Added */}
-              <p style={{ 
-                color: '#9ca3af', 
-                fontSize: '0.8rem',
-                margin: 0
+              {/* Description */}
+              {loo.description && (
+                <p style={{ 
+                  margin: '0 0 1rem 0', 
+                  color: '#4b5563', 
+                  fontSize: '0.9rem',
+                  lineHeight: '1.5'
+                }}>
+                  {loo.description.length > 120 
+                    ? loo.description.substring(0, 120) + '...' 
+                    : loo.description
+                  }
+                </p>
+              )}
+
+              {/* Footer */}
+              <div style={{ 
+                display: 'flex', 
+                justifyContent: 'space-between', 
+                alignItems: 'center',
+                paddingTop: '1rem',
+                borderTop: '1px solid #f3f4f6'
               }}>
-                Added on {formatDate(loo.created_at)}
-              </p>
+                <div style={{ 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  gap: '0.5rem',
+                  color: '#6b7280',
+                  fontSize: '0.8rem'
+                }}>
+                  <span>🕒</span>
+                  <span>{formatDate(loo.created_at)}</span>
+                </div>
+                <Link
+                  to={`/loo/${loo.id}`}
+                  style={{
+                    backgroundColor: '#1a1a1a',
+                    color: 'white',
+                    padding: '0.5rem 1rem',
+                    borderRadius: '0.375rem',
+                    textDecoration: 'none',
+                    fontSize: '0.9rem',
+                    fontWeight: '600'
+                  }}
+                >
+                  View Details
+                </Link>
+              </div>
             </div>
-          ))
-        )}
+          ))}
+        </div>
+
+        {/* Footer */}
+        <div style={{
+          textAlign: 'center',
+          marginTop: '3rem',
+          padding: '2rem',
+          color: '#6b7280',
+          fontSize: '0.9rem'
+        }}>
+          Your #2 is our #1 • Crowdsourced by travelers, for travelers
+        </div>
       </div>
     </div>
   );

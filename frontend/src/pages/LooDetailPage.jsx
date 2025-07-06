@@ -27,7 +27,7 @@ const LooDetailPage = () => {
         setLoo(response.data);
         setLoading(false);
       } catch (err) {
-        setError('Failed to fetch bathroom details');
+        setError('Failed to fetch loo details');
         setLoading(false);
         console.error('Error fetching loo:', err);
       }
@@ -60,7 +60,7 @@ const LooDetailPage = () => {
         height: '50vh',
         fontSize: '18px'
       }}>
-        Loading bathroom details...
+        Loading loo details...
       </div>
     );
   }
@@ -77,7 +77,7 @@ const LooDetailPage = () => {
         color: 'red',
         gap: '1rem'
       }}>
-        <p>{error || 'Bathroom not found'}</p>
+        <p>{error || 'Loo not found'}</p>
         <Link 
           to="/list"
           style={{
@@ -239,8 +239,8 @@ const LooDetailPage = () => {
                 {loo.images.map((image, index) => (
                   <img
                     key={image.id}
-                    src={`http://localhost:8000${image.image}`}
-                    alt={`Bathroom photo ${index + 1}`}
+                    src={image.image}
+                    alt={`Loo photo ${index + 1}`}
                     style={{
                       width: '100%',
                       height: '200px',
@@ -250,10 +250,10 @@ const LooDetailPage = () => {
                       cursor: 'pointer'
                     }}
                     onClick={() => {
-                      // Open image in new tab for full view
-                      window.open(`http://localhost:8000${image.image}`, '_blank');
+                      window.open(image.image, '_blank');
                     }}
                   />
+
                 ))}
               </div>
             </div>
@@ -359,8 +359,8 @@ const LooDetailPage = () => {
           onClick={() => {
             if (navigator.share) {
               navigator.share({
-                title: loo.name || 'Bathroom Location',
-                text: `Check out this bathroom location: ${loo.name || 'Unnamed Loo'}`,
+                title: loo.name || 'Loo Location',
+                text: `Check out this loo location: ${loo.name || 'Unnamed Loo'}`,
                 url: window.location.href
               });
             } else {

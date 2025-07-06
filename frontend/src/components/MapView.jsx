@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -13,20 +12,13 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
 });
 
-const MapPage = () => {
-  const [loos, setLoos] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+const MapView = ({ loos, height = '400px', showLocationButton = true, fullScreen = false }) => {
   const [userLocation, setUserLocation] = useState(null);
   const [mapCenter, setMapCenter] = useState([34.0725, -118.3889]); // Default to LA
   const [map, setMap] = useState(null);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCity, setSelectedCity] = useState('All Cities');
 
   // Default center (Los Angeles coordinates)
   const defaultCenter = [34.0725, -118.3889];
-
-  const cities = ['All Cities', 'Hong Kong', 'Tokyo', 'Paris'];
 
   // Get user's current location on component mount
   useEffect(() => {
@@ -53,22 +45,6 @@ const MapPage = () => {
     getUserLocation();
   }, []);
 
-  useEffect(() => {
-    const fetchLoos = async () => {
-      try {
-        const response = await axios.get('http://localhost:8000/api/loos/');
-        setLoos(response.data);
-        setLoading(false);
-      } catch (err) {
-        setError('Failed to fetch loo locations');
-        setLoading(false);
-        console.error('Error fetching loos:', err);
-      }
-    };
-
-    fetchLoos();
-  }, []);
-
   const handleMyLocationClick = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -89,126 +65,15 @@ const MapPage = () => {
     }
   };
 
-  if (loading) {
-    return (
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'center', 
-        alignItems: 'center', 
-        height: '100vh',
-        fontSize: '18px'
-      }}>
-        Loading loo locations...
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'center', 
-        alignItems: 'center', 
-        height: '100vh',
-        fontSize: '18px',
-        color: 'red'
-      }}>
-        {error}
-      </div>
-    );
-  }
-
   return (
-    <div style={{ height: '100%', width: '100%', position: 'relative' }}>
-      {/* Search and Filter Bar */}
-      <div style={{
-        position: 'absolute',
-        top: '1rem',
-        left: '1rem',
-        right: '1rem',
-        zIndex: 1000,
-        backgroundColor: 'white',
-        borderRadius: '0.75rem',
-        padding: '1rem',
-        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '1rem'
-      }}>
-        {/* Search Bar */}
-        <div style={{ position: 'relative' }}>
-          <input
-            type="text"
-            placeholder="Search by city, location name, or type..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            style={{
-              width: '100%',
-              padding: '0.75rem 1rem 0.75rem 2.5rem',
-              border: '1px solid #d1d5db',
-              borderRadius: '0.5rem',
-              fontSize: '1rem',
-              backgroundColor: '#f9fafb'
-            }}
-          />
-          <div style={{
-            position: 'absolute',
-            left: '0.75rem',
-            top: '50%',
-            transform: 'translateY(-50%)',
-            color: '#9ca3af',
-            fontSize: '1.2rem'
-          }}>
-            🔍
-          </div>
-          <button
-            style={{
-              position: 'absolute',
-              right: '0.5rem',
-              top: '50%',
-              transform: 'translateY(-50%)',
-              backgroundColor: 'transparent',
-              border: '1px solid #d1d5db',
-              borderRadius: '0.375rem',
-              padding: '0.25rem 0.5rem',
-              fontSize: '0.8rem',
-              color: '#6b7280',
-              cursor: 'pointer'
-            }}
-          >
-            🔧 Filters
-          </button>
-        </div>
-
-        {/* City Filter Pills */}
-        <div style={{ 
-          display: 'flex', 
-          gap: '0.5rem', 
-          overflowX: 'auto',
-          paddingBottom: '0.25rem'
-        }}>
-          {cities.map((city) => (
-            <button
-              key={city}
-              onClick={() => setSelectedCity(city)}
-              style={{
-                padding: '0.5rem 1rem',
-                borderRadius: '1rem',
-                border: 'none',
-                backgroundColor: selectedCity === city ? '#1a1a1a' : '#f3f4f6',
-                color: selectedCity === city ? 'white' : '#374151',
-                cursor: 'pointer',
-                minWidth: 'fit-content',
-                fontWeight: selectedCity === city ? '600' : '400',
-                fontSize: '0.9rem'
-              }}
-            >
-              {city}
-            </button>
-          ))}
-        </div>
-      </div>
-
+    <div style={{ 
+      height, 
+      width: '100%', 
+      position: 'relative',
+      borderRadius: fullScreen ? '0' : '0.75rem',
+      overflow: 'hidden',
+      border: fullScreen ? 'none' : '1px solid #e5e7eb'
+    }}>
       {/* Map Container */}
       <MapContainer
         center={mapCenter}
@@ -314,34 +179,36 @@ const MapPage = () => {
       </MapContainer>
 
       {/* My Location Button */}
-      <button
-        onClick={handleMyLocationClick}
-        style={{
-          position: 'absolute',
-          bottom: '2rem',
-          right: '2rem',
-          backgroundColor: '#10b981',
-          color: 'white',
-          padding: '0.75rem',
-          borderRadius: '50%',
-          border: 'none',
-          cursor: 'pointer',
-          fontSize: '1.2rem',
-          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-          zIndex: 1000,
-          width: '50px',
-          height: '50px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center'
-        }}
-        title="Center map on my location"
-      >
-        📍
-      </button>
+      {showLocationButton && (
+        <button
+          onClick={handleMyLocationClick}
+          style={{
+            position: 'absolute',
+            bottom: '1rem',
+            right: '1rem',
+            backgroundColor: '#10b981',
+            color: 'white',
+            padding: '0.75rem',
+            borderRadius: '50%',
+            border: 'none',
+            cursor: 'pointer',
+            fontSize: '1.2rem',
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+            zIndex: 1000,
+            width: '50px',
+            height: '50px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+          title="Center map on my location"
+        >
+          📍
+        </button>
+      )}
 
-      {/* Placeholder for map content when no locations */}
-      {loos.length === 0 && !loading && (
+      {/* Placeholder when no locations */}
+      {loos.length === 0 && (
         <div style={{
           position: 'absolute',
           top: '50%',
@@ -363,4 +230,4 @@ const MapPage = () => {
   );
 };
 
-export default MapPage;
+export default MapView;
