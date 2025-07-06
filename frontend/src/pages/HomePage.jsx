@@ -224,32 +224,61 @@ const HomePage = () => {
           </button>
         </div>
 
-        {/* City Filter Pills */}
+        {/* City Filter Pills and Map View Button */}
         <div style={{ 
           display: 'flex', 
-          gap: '0.5rem', 
-          overflowX: 'auto',
-          paddingBottom: '0.25rem'
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          gap: '1rem'
         }}>
-          {cities.map((city) => (
-            <button
-              key={city}
-              onClick={() => setSelectedCity(city)}
-              style={{
-                padding: '0.5rem 1rem',
-                borderRadius: '1rem',
-                border: 'none',
-                backgroundColor: selectedCity === city ? '#1a1a1a' : '#f3f4f6',
-                color: selectedCity === city ? 'white' : '#374151',
-                cursor: 'pointer',
-                minWidth: 'fit-content',
-                fontWeight: selectedCity === city ? '600' : '400',
-                fontSize: '0.9rem'
-              }}
-            >
-              {city}
-            </button>
-          ))}
+          <div style={{ 
+            display: 'flex', 
+            gap: '0.5rem', 
+            overflowX: 'auto',
+            paddingBottom: '0.25rem',
+            flex: 1
+          }}>
+            {cities.map((city) => (
+              <button
+                key={city}
+                onClick={() => setSelectedCity(city)}
+                style={{
+                  padding: '0.5rem 1rem',
+                  borderRadius: '1rem',
+                  border: 'none',
+                  backgroundColor: selectedCity === city ? '#1a1a1a' : '#f3f4f6',
+                  color: selectedCity === city ? 'white' : '#374151',
+                  cursor: 'pointer',
+                  minWidth: 'fit-content',
+                  fontWeight: selectedCity === city ? '600' : '400',
+                  fontSize: '0.9rem'
+                }}
+              >
+                {city}
+              </button>
+            ))}
+          </div>
+          
+          {/* Map View Button */}
+          <button
+            onClick={() => setViewMode('map')}
+            style={{
+              backgroundColor: '#1a1a1a',
+              color: 'white',
+              padding: '0.75rem 1.5rem',
+              borderRadius: '0.375rem',
+              border: 'none',
+              cursor: 'pointer',
+              fontSize: '0.9rem',
+              fontWeight: '600',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              minWidth: 'fit-content'
+            }}
+          >
+            🗺️ Map View
+          </button>
         </div>
       </div>
 
