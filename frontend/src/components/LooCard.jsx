@@ -20,9 +20,10 @@ const LooCard = ({ loo }) => {
     return '⭐'.repeat(rating);
   };
 
-  // Generate mock rating and review count for demo
-  const mockRating = Math.max(loo.cleanliness, loo.privacy) || 4;
-  const mockReviewCount = Math.floor(Math.random() * 200) + 50;
+  // Use actual cleanliness and privacy ratings from the database
+  const cleanlinessRating = loo.cleanliness || 0;
+  const privacyRating = loo.privacy || 0;
+  const hasRatings = cleanlinessRating > 0 || privacyRating > 0;
 
   return (
     <div
@@ -65,7 +66,7 @@ const LooCard = ({ loo }) => {
             color: '#6b7280', 
             fontSize: '0.9rem' 
           }}>
-            {loo.city || 'Unknown City'}
+            {loo.latitude && loo.longitude ? `${loo.latitude.toFixed(4)}, ${loo.longitude.toFixed(4)}` : 'Location coordinates'}
           </p>
         </div>
         <Link
@@ -85,31 +86,48 @@ const LooCard = ({ loo }) => {
       </div>
 
       {/* Rating */}
-      <div style={{ 
-        display: 'flex', 
-        alignItems: 'center', 
-        gap: '1rem',
-        marginBottom: '1rem'
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-          <span style={{ fontSize: '1.1rem' }}>
-            {renderStars(mockRating) || '⭐⭐⭐⭐'}
-          </span>
-          <span style={{ 
-            fontSize: '0.9rem', 
-            fontWeight: '600',
-            color: '#1f2937'
-          }}>
-            {mockRating}.{Math.floor(Math.random() * 10)}
-          </span>
-          <span style={{ 
-            fontSize: '0.8rem', 
-            color: '#6b7280' 
-          }}>
-            ({mockReviewCount} reviews)
-          </span>
+      {hasRatings && (
+        <div style={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          gap: '1rem',
+          marginBottom: '1rem'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            {cleanlinessRating > 0 && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                <span style={{ fontSize: '0.8rem', color: '#6b7280' }}>Cleanliness:</span>
+                <span style={{ fontSize: '1rem' }}>
+                  {renderStars(cleanlinessRating)}
+                </span>
+              </div>
+            )}
+            {privacyRating > 0 && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                <span style={{ fontSize: '0.8rem', color: '#6b7280' }}>Privacy:</span>
+                <span style={{ fontSize: '1rem' }}>
+                  {renderStars(privacyRating)}
+                </span>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      )}
+
+      {/* No ratings message */}
+      {!hasRatings && (
+        <div style={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          gap: '0.5rem',
+          marginBottom: '1rem',
+          color: '#6b7280',
+          fontSize: '0.9rem'
+        }}>
+          <span>📝</span>
+          <span>No reviews yet</span>
+        </div>
+      )}
 
       {/* Tags */}
       {loo.tags && loo.tags.length > 0 && (
@@ -178,9 +196,16 @@ const LooCard = ({ loo }) => {
           fontWeight: '600',
           color: '#374151'
         }}>
-          {loo.tags && loo.tags.includes('Luxury') ? 'Luxury Hotel' : 
-           loo.tags && loo.tags.includes('Coffee Shop') ? 'Coffee Shop' :
-           loo.tags && loo.tags.includes('Public') ? 'Public Restroom' : 'Restroom'}
+          {loo.tags && loo.tags.length > 0 ? (
+            loo.tags.includes('Hotel') || loo.tags.includes('Luxury') ? '🏨 Hotel' :
+            loo.tags.includes('Coffee Shop') || loo.tags.includes('Cafe') ? '☕ Cafe' :
+            loo.tags.includes('Restaurant') ? '🍽️ Restaurant' :
+            loo.tags.includes('Mall') || loo.tags.includes('Shopping') ? '🛍️ Mall' :
+            loo.tags.includes('Gas Station') ? '⛽ Gas Station' :
+            loo.tags.includes('Park') ? '🌳 Park' :
+            loo.tags.includes('Public') ? '🚻 Public' :
+            loo.tags[0] // Show first tag if no specific match
+          ) : '🚽 Restroom'}
         </div>
       </div>
     </div>

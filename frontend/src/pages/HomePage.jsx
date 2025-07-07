@@ -35,8 +35,11 @@ const HomePage = () => {
       loo.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       loo.tags?.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
     
+    // For now, since we don't have city data, just filter by search
+    // In the future, you could use reverse geocoding to get city names from coordinates
     const matchesCity = selectedCity === 'All Cities' || 
-      loo.name?.toLowerCase().includes(selectedCity.toLowerCase());
+      loo.name?.toLowerCase().includes(selectedCity.toLowerCase()) ||
+      loo.tags?.some(tag => tag.toLowerCase().includes(selectedCity.toLowerCase()));
     
     return matchesSearch && matchesCity;
   });
